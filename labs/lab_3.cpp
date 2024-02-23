@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+#include <limits.h>
 
 void print16(void *p) {
 	unsigned short *p1 = reinterpret_cast<unsigned short *>(p);
@@ -10,7 +12,7 @@ void print32(void *p) {
 	unsigned int *p1 = reinterpret_cast<unsigned int *>(p);
 	int *p2 = reinterpret_cast<int *>(p);
 	float *p3 = reinterpret_cast<float *>(p);
-	printf("h: %08x,\tud: %10u,\tsd: %11d,\tff: %14.2f,\tfs: %13e\n", *p1, *p1, *p2, *p3, *p3);
+	printf("h: %08x,\tud: %10u,\tsd: %11d,\tff: %14.8f,\tfs: %13e\n", *p1, *p1, *p2, *p3, *p3);
 }
 
 
@@ -81,7 +83,7 @@ float abs_for_float(void *num)
     return *static_cast<float*>(static_cast<void*>(&tmp));
 }
 
-float funny_sum(int N, bool reverse = 0)
+float funny_sum_float(int N, bool reverse = 0)
 {
     float sum = 0;
     if (reverse) for (int i = N; i > 0; i--) sum += (float) 1 / i;
@@ -89,7 +91,7 @@ float funny_sum(int N, bool reverse = 0)
     return sum;
 }
 
-double funny_sum(int N, bool reverse = 0)
+double funny_sum_double(int N, bool reverse = 0)
 {
     double sum = 0;
     if (reverse) for (int i = N; i > 0; i--) sum += (double) 1 / i;
@@ -98,9 +100,10 @@ double funny_sum(int N, bool reverse = 0)
 }
 
 void print64(void *p) {
-    long long *p1 = reinterpret_cast<long long *>(p);
-    double *p2 = reinterpret_cast<double *>(p);
-	printf("h: %016llx,\tff: %f\n", *p1, *p2);
+    unsigned long long *p1 = reinterpret_cast<unsigned long long *>(p);
+    long long *p2 = reinterpret_cast<long long *>(p);
+    double *p3 = reinterpret_cast<double *>(p);
+    printf("h: %016llx,\tud: %10u,\tsd: %11d,\tff: %14.8f,\tfs: %13e\n", *p1, *p1, *p2, *p3, *p3);
 }
 
 int main()
@@ -195,10 +198,15 @@ int main()
     print32(&v_2);
 
     printf("\n\n\n");
-
+    
     printf("Ex. 6:\n");
-    float S_1 = funny_sum(pow(10, 9)), S_2 = funny_sum(pow(10, 6)), S_3 = funny_sum(pow(10, 9));
-    float S_1_r = funny_sum(pow(10, 9), 1), S_2_r = funny_sum(pow(10, 6), 1), S_3_r = funny_sum(pow(10, 9), 1);
+    
+    float S_1 = funny_sum_float(pow(10, 3));
+    float S_1_r = funny_sum_float(pow(10, 3), 1);
+    float S_2 = funny_sum_float(pow(10, 6));
+    float S_2_r = funny_sum_float(pow(10, 6), 1);
+    float S_3 = funny_sum_float(pow(10, 9));
+    float S_3_r = funny_sum_float(pow(10, 9), 1);
 
     printf("Float, direct, 10^3:\n");
     print32(&S_1);
@@ -213,8 +221,12 @@ int main()
     printf("Float, reversal, 10^9:\n");
     print32(&S_3_r);
 
-    double SS_1 = funny_sum(pow(10, 3)), SS_2 = funny_sum(pow(10, 6)), SS_3 = funny_sum(pow(10, 9));
-    double SS_1_r = funny_sum(pow(10, 3), 1), SS_2_r = funny_sum(pow(10, 6), 1), SS_3_r = funny_sum(pow(10, 9), 1);
+    double SS_1 = funny_sum_double(pow(10, 3));
+    double SS_1_r = funny_sum_double(pow(10, 3), 1);
+    double SS_2 = funny_sum_double(pow(10, 6));
+    double SS_2_r = funny_sum_double(pow(10, 6), 1);
+    double SS_3 = funny_sum_double(pow(10, 9));
+    double SS_3_r = funny_sum_double(pow(10, 9), 1);
 
     printf("Double, direct, 10^3:\n");
     print64(&SS_1);
