@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <limits.h>
 
 void viewPointer(void *p) {
 	char *p1 = reinterpret_cast<char *>(p);
@@ -53,6 +54,13 @@ void print32(void *p) {
 	printf("h: %08x,\tud: %10u,\tsd: %11d,\tff: %14.2f,\tfs: %13e\n", *p1, *p1, *p2, *p3, *p3);
 }
 
+void print64(void *p) {
+    unsigned long long *p1 = reinterpret_cast<unsigned long long *>(p);
+    long long *p2 = reinterpret_cast<long long *>(p);
+    double *p3 = reinterpret_cast<double *>(p);
+    printf("h: %016llx,\tud: %10u,\tsd: %11d,\tff: %14.2f,\tfs: %13e\n", *p1, *p1, *p2, *p3, *p3);
+}
+
 int main() {
 	//int a = 42;
 	//viewPointer(&a);
@@ -89,15 +97,16 @@ int main() {
 
 	/*
 	unsigned int a = 0;
-	unsigned int b = 4294967295;
-	int c = -2147483648;
-	int d = 2147483647;
+	unsigned int b = UINT_MAX;
+	int c = INT_MIN;
+	int d = INT_MAX;
 	unsigned int x = 9;
 	int y = -9;
 	unsigned int z = 0x88776155;
 	float fx = x;
 	float fy = y;
 	float fz = z;
+
 	print32(&a);
 	print32(&b);
 	print32(&c);
@@ -110,6 +119,29 @@ int main() {
 	print32(&fz);
 	*/
 
-	return 0;
+    /*
+    unsigned long long a = 0;
+    unsigned long long b = ULLONG_MAX;
+	long long c = LLONG_MIN;
+	long long d = LLONG_MAX;
+	unsigned long long x = 9;
+	long long y = -9;
+	unsigned long long z = 0x88776155;
+	double dx = x;
+	double dy = y;
+	double dz = z;
 
+    print64(&a);
+	print64(&b);
+	print64(&c);
+	print64(&d);
+	print64(&x);
+	print64(&y);
+	print64(&z);
+	print64(&dx);
+	print64(&dy);
+	print64(&dz);
+    */
+
+	return 0;
 }
